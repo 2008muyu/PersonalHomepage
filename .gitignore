@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+*.local
+.v2c
+.video_agent
+docs/evidence/*.webm
+docs/evidence/**/*.webm

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#07231d"/>
+      <stop offset="100%" stop-color="#0a1220"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="75%" r="80%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#bg)"/>
+  <rect width="640" height="400" fill="url(#glow)"/>
+  <g transform="translate(150 120)" stroke="#34d399" fill="none" stroke-width="1.6">
+    <rect x="0" y="24" width="88" height="14" rx="7" opacity="0.9"/>
+    <rect x="14" y="52" width="112" height="14" rx="7" opacity="0.7"/>
+    <rect x="14" y="80" width="76" height="14" rx="7" opacity="0.5"/>
+    <rect x="14" y="108" width="132" height="14" rx="7" opacity="0.35"/>
+    <circle cx="7" cy="31" r="5" fill="#34d399"/>
+    <circle cx="21" cy="59" r="5" fill="#34d399" opacity="0.8"/>
+    <circle cx="21" cy="87" r="5" fill="#34d399" opacity="0.6"/>
+    <circle cx="21" cy="115" r="5" fill="#34d399" opacity="0.4"/>
+  </g>
+  <g transform="translate(420 200)" stroke="#34d399" fill="none" opacity="0.85">
+    <path d="M-60 40 L0 -50 L60 40" stroke-width="2"/>
+    <path d="M-36 16 L36 16"/>
+    <circle cx="0" cy="-50" r="6" fill="#34d399" stroke="none"/>
+  </g>
+  <rect x="60" y="272" width="8" height="52" rx="4" fill="#34d399"/>
+  <text x="86" y="300" font-family="Menlo, monospace" font-size="26" font-weight="700" fill="#e9f1f9">AgentGuide</text>
+  <text x="86" y="324" font-family="PingFang SC, sans-serif" font-size="14" fill="#9db0c4">LangGraph 实战 · 高级 RAG · 面试题库</text>
+</svg>
