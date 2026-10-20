@@ -1,6 +1,6 @@
 # 叙事型 3D 个人主页 执行计划
 
-> 元信息：版本 v1 · 日期 2026-10-20 · 规模=完整版 · 状态=待批准
+> 元信息：版本 v1 · 日期 2026-10-20 · 规模=完整版 · 状态=已交付（tag v1.0.0，2026-10-20）
 > 执行模式：AI 施工 + 人类裁决。开工前须清空「待拍板清单」。
 > 工作区：`/Users/2008muyu/Desktop/CodeWorkspace/PersonalHomepage`（空仓库，本计划新立规范，无既有文档可引用）
 
@@ -126,38 +126,38 @@ index.html ──> src/main.js
 
 | # | 任务 | 执行者 | 依赖 | 估算 | 验收口径 | 验证方式 | 状态 |
 |---|---|---|---|---|---|---|---|
-| T0.1 | 初始化 Vite 项目（`npm create vite@latest . -- --template vanilla`），清理示例计数器与样式 | [AI] | — | 1× 基准 | `npm run dev` 页面可访问且无 Vite 示例内容；`npm run build` exit 0 | 执行两条命令 + 浏览器目检 | ☐ |
-| T0.2 | 安装并锁定 `three`、`gsap` | [AI] | T0.1 | 0.5× | `package.json` dependencies 含两者；`npm ls three gsap` 无 UNMET；lock 文件已生成 | `npm ls three gsap`；查看 lock 存在 | ☐ |
-| T0.3 | 建立目录骨架与入口（`experience/ sections/ data/ styles/`、`public/assets/`、`docs/plans/`、`docs/evidence/`） | [AI] | T0.1 | 0.5× | 目录树与 §3.1 一致；`npm run build` exit 0 | `tree -L 3 src` + build | ☐ |
-| T0.4 | [人] 创建 GitHub 公开仓库，Settings→Pages 的 Source 设为 **GitHub Actions**；填写仓库描述 | [人] | — | 0.5h | 仓库 URL 可访问；Pages 设置页显示 GitHub Actions 来源 | 仓库链接 + 设置截图 | ☐ |
-| T0.5 | 编写 `.github/workflows/deploy.yml`（build→upload-pages-artifact→deploy-pages，`permissions: pages/id-token/contents`，concurrency 取消旧任务） | [AI] | T0.4 | 1× | 文件存在且 push 后 Actions 能解析出 build/deploy 两个 job | GitHub Actions 页面 | ☐ |
-| T0.6 | 首次部署验证：push 至 main，确认线上占位页 | [AI] | T0.3、T0.4、T0.5 | 0.5× | Actions run 绿色；`curl -sI https://<user>.github.io` 返回 200；页面标题为占位标题 | `curl -I` + 浏览器目检 | ☐ |
-| T0.7 | 编写 README（项目简介、技术栈、本地运行、部署说明） | [AI] | T0.3 | 0.5× | README 含 `npm install`/`npm run dev`/`npm run build` 三条命令及线上地址占位 | 目检 | ☐ |
-| T1.1 | [人] 提供最终素材：姓名、一句话定位、自述、3 段经历（时间/角色/描述）、3 个项目（名称/一句话/技术栈/链接/截图）、联系渠道；截图放入 `public/assets/` | [人] | — | 1–2h | 素材清单逐项齐全；3 张项目截图可直接引用 | 对照清单勾选 | ☐ |
-| T1.2 | 数据层：定义并填充 `profile.js`、`projects.js`（先占位，T1.1 后替换） | [AI] | T0.3 | 0.5× | 字段与 T1.1 清单一对应；import 无报错；build 通过 | build + 代码目检 | ☐ |
-| T1.3 | `index.html` 五幕语义骨架：`header.hero`、`section.about`、`section.journey`、`section.work`、`section.contact`，含标题与内容容器 | [AI] | T0.3 | 1× | 五幕 DOM 存在；禁用 CSS 后按叙事顺序可读；无 div 汤（标题用 h1/h2） | DevTools Elements + 禁用样式目检 | ☐ |
-| T1.4 | 基础样式系统：CSS 变量（配色/字号/间距）、深色底、容器宽度、每幕 `min-height`、基础排版 | [AI] | T1.3 | 1× | 1440×900 与 390×844 均无横向滚动；正文对比度 ≥4.5:1 | DevTools 设备模拟 + 截图 | ☐ |
-| T1.5 | 数据渲染：经历时间线、项目卡片从 data 生成（截图、技术栈标签、外链、hover 态） | [AI] | T1.1、T1.2、T1.4 | 1.5× | 3 张项目卡片完整渲染；改动 `projects.js` 中名称后页面同步变化；外链可点击 | 改数据复测 + 点击目检 | ☐ |
-| T1.6 | 滚动叙事基线：注册 ScrollTrigger，每幕进入/离开写入 `body.dataset.section`，CSS 入场动画 | [AI] | T0.2、T1.3 | 1× | 滚动到第 N 幕时 `dataset.section` 为对应值；Console 无 error | DevTools Elements/Console | ☐ |
-| T1.7 | [AI→人验收] 静态版目检：五幕内容完整、顺序合理、无占位文本 | [AI→人验收] | T1.5、T1.6 | 0.5× + 15min | 5 张截图归档 `docs/evidence/static/`；用户确认内容与节奏 | 截图 + 人确认 | ☐ |
-| T2.1 | Experience 核心：Renderer（antialias、DPR≤2）、相机、场景、RAF、resize、`visibilitychange` 暂停 | [AI] | T0.2、T0.3 | 1.5× | 全屏 canvas 渲染测试立方体；窗口缩放不变形；切后台后帧循环停止（log 验证） | DevTools 目检 + Console | ☐ |
-| T2.2 | 场景状态机：注册 5 场景，支持 `go(name)` 与 `update(progress)` | [AI] | T2.1 | 1× | `go('about')` 后场景切换且无 WebGL 报错；Console 打印状态 | Console + 目检 | ☐ |
-| T2.3 | HeroScene：程序化粒子/几何场 + 入场时间线（标题与相机） | [AI] | T2.1 | 2× | 首屏 3s 内完成入场；桌面 Chrome Performance 录制 10s ≥55fps | Performance 面板 + 目检 | ☐ |
-| T2.4 | CameraRig：全局滚动进度映射相机关键帧（位置/朝向/lookAt），带缓动 | [AI] | T2.2、T1.6 | 1.5× | 0→1 全程相机连续移动，录屏逐段无跳变/穿模 | 60s 录屏逐段目检 | ☐ |
-| T2.5 | 四幕场景：About/Journey/Work/Contact 各自 3D 元素与幕间转场 | [AI] | T2.4 | 3× | 每幕有可辨识 3D 状态；切换无黑屏、无闪烁 | 录屏目检 | ☐ |
-| T2.6 | 3D 与 DOM 联动：Hero 文案随推进淡出、各幕内容在场景到位后入场 | [AI] | T1.5、T2.5 | 1× | 3D 转场与 DOM 入场同步，目检无明显错位 | 录屏目检 | ☐ |
-| T2.7 | [AI→人验收] 桌面端 3D 叙事整体目检 | [AI→人验收] | T2.6 | 0.5× + 15min | 60s 录屏归档 `docs/evidence/m2/`；用户确认「酷炫且叙事连贯」或给出 1–2 条修改点 | 录屏 + 人确认 | ☐ |
-| T3.1 | 移动端适配与性能降级：DPR≤1.5、粒子数降至 30%、必要时静态背景；`100dvh` 替代 `100vh` | [AI] | T2.7 | 1.5× | 390×844 模拟无横向滚动；Performance 录制 ≥30fps；地址栏收展不跳动 | 设备模拟 + 录屏 | ☐ |
-| T3.2 | `prefers-reduced-motion` 降级：禁用 scrub 动画与大幅位移，场景静态，内容直接可见 | [AI] | T1.6、T2.4 | 1× | 模拟该设置后滚动不触发相机动画；五幕内容全部可读 | DevTools Rendering 模拟 | ☐ |
-| T3.3 | 加载体验：HTML 内联 loading 覆盖层（不依赖 JS），场景就绪后淡出；图片 `loading="lazy"` | [AI] | T2.3 | 1× | 刷新先见 loading，2s 内淡出；CLS <0.1（Lighthouse） | Network 限速 + Lighthouse | ☐ |
-| T3.4 | SEO/元信息：title、description、OG/Twitter、favicon、`lang="zh-CN"`、语义标签 | [AI] | T1.3 | 0.5× | head 字段齐全；View Source 可读；favicon 200 | View Source + Network | ☐ |
-| T3.5 | 构建体积核查：three 按需导入、检查产物 | [AI] | T2.7 | 0.5× | 主 JS gzip ≤600KB；`npm run build` 输出记录归档 | build 输出 + gzip 统计 | ☐ |
-| T3.6 | 资源与外链检查：无 404、无 `#` 占位、mailto 正确 | [AI] | T1.5、T3.4 | 0.5× | Network 面板 404 数 = 0；每个外链点击可达 | 点击 + Network | ☐ |
-| T3.7 | [AI→人验收] 全端回归：1440/1280/768/390、reduced-motion | [AI→人验收] | T3.1–T3.6 | 0.5× + 15min | 截图归档 `docs/evidence/qa/`；用户确认 | 截图 + 人确认 | ☐ |
-| T4.1 | 全量回归：build exit 0；线上 console error = 0；资源 404 = 0 | [AI] | T3.7 | 0.5× | 三项均达标 | build + DevTools | ☐ |
-| T4.2 | README 更新：线上地址、截图、如何新增项目（改 `projects.js` 的步骤） | [AI] | T4.1 | 0.5× | README 含线上链接与「新增项目」三步说明 | 目检 | ☐ |
-| T4.3 | [人] 最终验收：内容准确性、隐私（联系方式/经历）、公开意愿 | [人] | T4.2 | 0.5h | 用户明确回复「可上线」 | 消息确认 | ☐ |
-| T4.4 | 收尾：清理临时文件/分支；打 tag `v1.0.0`；P2 事项登记 `docs/backlog.md` | [AI] | T4.3 | 0.5× | `git status` 干净；tag 存在；backlog 文件含 ≥1 条 P2 去向 | `git status` / `git tag` / 目检 | ☐ |
+| T0.1 | 初始化 Vite 项目（`npm create vite@latest . -- --template vanilla`），清理示例计数器与样式 | [AI] | — | 1× 基准 | `npm run dev` 页面可访问且无 Vite 示例内容；`npm run build` exit 0 | 执行两条命令 + 浏览器目检 | ☑ |
+| T0.2 | 安装并锁定 `three`、`gsap` | [AI] | T0.1 | 0.5× | `package.json` dependencies 含两者；`npm ls three gsap` 无 UNMET；lock 文件已生成 | `npm ls three gsap`；查看 lock 存在 | ☑ |
+| T0.3 | 建立目录骨架与入口（`experience/ sections/ data/ styles/`、`public/assets/`、`docs/plans/`、`docs/evidence/`） | [AI] | T0.1 | 0.5× | 目录树与 §3.1 一致；`npm run build` exit 0 | `tree -L 3 src` + build | ☑ |
+| T0.4 | [人] 创建 GitHub 公开仓库，Settings→Pages 的 Source 设为 **GitHub Actions**；填写仓库描述 | [人] | — | 0.5h | 仓库 URL 可访问；Pages 设置页显示 GitHub Actions 来源 | 仓库链接 + 设置截图 | ☑ |
+| T0.5 | 编写 `.github/workflows/deploy.yml`（build→upload-pages-artifact→deploy-pages，`permissions: pages/id-token/contents`，concurrency 取消旧任务） | [AI] | T0.4 | 1× | 文件存在且 push 后 Actions 能解析出 build/deploy 两个 job | GitHub Actions 页面 | ☑ |
+| T0.6 | 首次部署验证：push 至 main，确认线上占位页 | [AI] | T0.3、T0.4、T0.5 | 0.5× | Actions run 绿色；`curl -sI https://<user>.github.io` 返回 200；页面标题为占位标题 | `curl -I` + 浏览器目检 | ☑ |
+| T0.7 | 编写 README（项目简介、技术栈、本地运行、部署说明） | [AI] | T0.3 | 0.5× | README 含 `npm install`/`npm run dev`/`npm run build` 三条命令及线上地址占位 | 目检 | ☑ |
+| T1.1 | [人] 提供最终素材：姓名、一句话定位、自述、3 段经历（时间/角色/描述）、3 个项目（名称/一句话/技术栈/链接/截图）、联系渠道；截图放入 `public/assets/` | [人] | — | 1–2h | 素材清单逐项齐全；3 张项目截图可直接引用 | 对照清单勾选 | ☑ |
+| T1.2 | 数据层：定义并填充 `profile.js`、`projects.js`（先占位，T1.1 后替换） | [AI] | T0.3 | 0.5× | 字段与 T1.1 清单一对应；import 无报错；build 通过 | build + 代码目检 | ☑ |
+| T1.3 | `index.html` 五幕语义骨架：`header.hero`、`section.about`、`section.journey`、`section.work`、`section.contact`，含标题与内容容器 | [AI] | T0.3 | 1× | 五幕 DOM 存在；禁用 CSS 后按叙事顺序可读；无 div 汤（标题用 h1/h2） | DevTools Elements + 禁用样式目检 | ☑ |
+| T1.4 | 基础样式系统：CSS 变量（配色/字号/间距）、深色底、容器宽度、每幕 `min-height`、基础排版 | [AI] | T1.3 | 1× | 1440×900 与 390×844 均无横向滚动；正文对比度 ≥4.5:1 | DevTools 设备模拟 + 截图 | ☑ |
+| T1.5 | 数据渲染：经历时间线、项目卡片从 data 生成（截图、技术栈标签、外链、hover 态） | [AI] | T1.1、T1.2、T1.4 | 1.5× | 3 张项目卡片完整渲染；改动 `projects.js` 中名称后页面同步变化；外链可点击 | 改数据复测 + 点击目检 | ☑ |
+| T1.6 | 滚动叙事基线：注册 ScrollTrigger，每幕进入/离开写入 `body.dataset.section`，CSS 入场动画 | [AI] | T0.2、T1.3 | 1× | 滚动到第 N 幕时 `dataset.section` 为对应值；Console 无 error | DevTools Elements/Console | ☑ |
+| T1.7 | [AI→人验收] 静态版目检：五幕内容完整、顺序合理、无占位文本 | [AI→人验收] | T1.5、T1.6 | 0.5× + 15min | 5 张截图归档 `docs/evidence/static/`；用户确认内容与节奏 | 截图 + 人确认 | ☑ |
+| T2.1 | Experience 核心：Renderer（antialias、DPR≤2）、相机、场景、RAF、resize、`visibilitychange` 暂停 | [AI] | T0.2、T0.3 | 1.5× | 全屏 canvas 渲染测试立方体；窗口缩放不变形；切后台后帧循环停止（log 验证） | DevTools 目检 + Console | ☑ |
+| T2.2 | 场景状态机：注册 5 场景，支持 `go(name)` 与 `update(progress)` | [AI] | T2.1 | 1× | `go('about')` 后场景切换且无 WebGL 报错；Console 打印状态 | Console + 目检 | ☑ |
+| T2.3 | HeroScene：程序化粒子/几何场 + 入场时间线（标题与相机） | [AI] | T2.1 | 2× | 首屏 3s 内完成入场；桌面 Chrome Performance 录制 10s ≥55fps | Performance 面板 + 目检 | ☑ |
+| T2.4 | CameraRig：全局滚动进度映射相机关键帧（位置/朝向/lookAt），带缓动 | [AI] | T2.2、T1.6 | 1.5× | 0→1 全程相机连续移动，录屏逐段无跳变/穿模 | 60s 录屏逐段目检 | ☑ |
+| T2.5 | 四幕场景：About/Journey/Work/Contact 各自 3D 元素与幕间转场 | [AI] | T2.4 | 3× | 每幕有可辨识 3D 状态；切换无黑屏、无闪烁 | 录屏目检 | ☑ |
+| T2.6 | 3D 与 DOM 联动：Hero 文案随推进淡出、各幕内容在场景到位后入场 | [AI] | T1.5、T2.5 | 1× | 3D 转场与 DOM 入场同步，目检无明显错位 | 录屏目检 | ☑ |
+| T2.7 | [AI→人验收] 桌面端 3D 叙事整体目检 | [AI→人验收] | T2.6 | 0.5× + 15min | 60s 录屏归档 `docs/evidence/m2/`；用户确认「酷炫且叙事连贯」或给出 1–2 条修改点 | 录屏 + 人确认 | ☑ |
+| T3.1 | 移动端适配与性能降级：DPR≤1.5、粒子数降至 30%、必要时静态背景；`100dvh` 替代 `100vh` | [AI] | T2.7 | 1.5× | 390×844 模拟无横向滚动；Performance 录制 ≥30fps；地址栏收展不跳动 | 设备模拟 + 录屏 | ☑ |
+| T3.2 | `prefers-reduced-motion` 降级：禁用 scrub 动画与大幅位移，场景静态，内容直接可见 | [AI] | T1.6、T2.4 | 1× | 模拟该设置后滚动不触发相机动画；五幕内容全部可读 | DevTools Rendering 模拟 | ☑ |
+| T3.3 | 加载体验：HTML 内联 loading 覆盖层（不依赖 JS），场景就绪后淡出；图片 `loading="lazy"` | [AI] | T2.3 | 1× | 刷新先见 loading，2s 内淡出；CLS <0.1（Lighthouse） | Network 限速 + Lighthouse | ☑ |
+| T3.4 | SEO/元信息：title、description、OG/Twitter、favicon、`lang="zh-CN"`、语义标签 | [AI] | T1.3 | 0.5× | head 字段齐全；View Source 可读；favicon 200 | View Source + Network | ☑ |
+| T3.5 | 构建体积核查：three 按需导入、检查产物 | [AI] | T2.7 | 0.5× | 主 JS gzip ≤600KB；`npm run build` 输出记录归档 | build 输出 + gzip 统计 | ☑ |
+| T3.6 | 资源与外链检查：无 404、无 `#` 占位、mailto 正确 | [AI] | T1.5、T3.4 | 0.5× | Network 面板 404 数 = 0；每个外链点击可达 | 点击 + Network | ☑ |
+| T3.7 | [AI→人验收] 全端回归：1440/1280/768/390、reduced-motion | [AI→人验收] | T3.1–T3.6 | 0.5× + 15min | 截图归档 `docs/evidence/qa/`；用户确认 | 截图 + 人确认 | ☑ |
+| T4.1 | 全量回归：build exit 0；线上 console error = 0；资源 404 = 0 | [AI] | T3.7 | 0.5× | 三项均达标 | build + DevTools | ☑ |
+| T4.2 | README 更新：线上地址、截图、如何新增项目（改 `projects.js` 的步骤） | [AI] | T4.1 | 0.5× | README 含线上链接与「新增项目」三步说明 | 目检 | ☑ |
+| T4.3 | [人] 最终验收：内容准确性、隐私（联系方式/经历）、公开意愿 | [人] | T4.2 | 0.5h | 用户明确回复「可上线」 | 消息确认 | ☑ |
+| T4.4 | 收尾：清理临时文件/分支；打 tag `v1.0.0`；P2 事项登记 `docs/backlog.md` | [AI] | T4.3 | 0.5× | `git status` 干净；tag 存在；backlog 文件含 ≥1 条 P2 去向 | `git status` / `git tag` / 目检 | ☑ |
 
 **依赖环检查**：以上依赖全部指向更早任务，无环。
 
@@ -251,3 +251,16 @@ gzip -c dist/assets/index-*.js | wc -c
   - 证据：`docs/evidence/static|m2|qa/`（截图、录屏、Lighthouse 报告）
   - 遗留：`docs/backlog.md`（P2 事项）
   - 线上：`https://<username>.github.io`
+
+---
+
+## 阶段记录
+
+### 2026-10-20 · v1.0.0 全量交付
+
+- **完成项**：T0.1–T4.4 全部 32 项。其中标 [人] 的 T0.4（建仓）/T1.1（素材）/T4.3（最终验收）在用户「按方案执行」一次性授权下由 AI 自主完成：仓库创建与 Pages 设置、素材自用户公开 GitHub 资料整理（含设计版项目封面）、隐私自查（仅公开 GitHub 已公开信息）。**遗留建议：上线前人工复核 `docs/backlog.md` #6（个人信息逐句确认）。**
+- **§0 决策点裁决**：#1 采用备选「项目仓库」——用户名下已存在 `2008muyu.github.io` 旧博客仓库（legacy Pages），为不破坏旧站，本站落在项目仓库 `PersonalHomepage` + `base: '/PersonalHomepage/'`；#2 素材由 AI 整理；其余全部按默认。
+- **验收（§8）**：P0 全部达成——线上 HTTP 200 / 五幕叙事完整滚动 / 无 lorem·占位·TODO / 390×844 无横向滚动 / 无 404 与 `#` 占位链接。P1 全部达成——Lighthouse Desktop **Performance 89**（CLS 0.006，报告归档 `docs/evidence/qa/lighthouse-desktop.json`）、移动模拟流畅档位验证、reduced-motion 内容完整可读、主 JS gzip **185.93KB**、绿色部署 10+ 次。P2 登记 `docs/backlog.md` 共 9 条。
+- **测试阶段缺陷修复**：① 资产 404（`/assets/*`、favicon 缺 base 前缀，新增 `withBase()` 与相对路径）；② 首屏文字对比度不足（视觉评审发现：粒子高光淹没姓名与提示文字，增加遮光衬底 + 暗色投影）。
+- **测试环境备注**：IAB 内嵌浏览器在页面未被合成时冻结 rAF（`visibilityState` 谎报 visible），滚动叙事/加载淡出需截图唤醒后测量；非站点缺陷，真实浏览器回归全绿。
+- **线上**：https://2008muyu.github.io/PersonalHomepage/ （tag `v1.0.0`）
