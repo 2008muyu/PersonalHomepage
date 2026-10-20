@@ -47,10 +47,10 @@ export class CameraRig {
     // 入场：从更远处推近
     this._pos.z += this.intro * 7
     this._pos.y += this.intro * 1.2
-    // 鼠标视差（弱）
-    this._pos.x += this.parallax.x * 0.5
-    this._pos.y -= this.parallax.y * 0.3
-    this._look.x += this.parallax.x * 0.25
+    // 鼠标视差（v1.2 加强：与粒子引力场叠加出空间感）
+    this._pos.x += this.parallax.x * 0.9
+    this._pos.y -= this.parallax.y * 0.5
+    this._look.x += this.parallax.x * 0.45
 
     const alpha = 1 - Math.exp(-this.damping * dt)
     this.camera.position.lerp(this._pos, alpha)

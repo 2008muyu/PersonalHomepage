@@ -48,6 +48,36 @@ export class Experience {
     this.sm.register('contact', new ContactScene())
     this.sm.go('hero')
 
+    // 粒子交互状态（预分配，渲染循环内零分配）
+    this._progress = 0
+    this._prevProgress = 0
+    this._ndcX = 0
+    this._ndcY = 0
+    this._pointerSeen = false
+    this._pointerAt = -1e3 // 上次指针移动时刻（elapsed 域）
+    this._rippleSlot = 0
+    this._mouseTarget = new THREE.Vector3(0, 0, 999)
+    this._rayPoint = new THREE.Vector3()
+    this._rayDir = new THREE.Vector3()
+
+    this._onPointerMove = (e) => {
+      this._ndcX = (e.clientX / window.innerWidth) * 2 - 1
+      this._ndcY = -(e.clientY / window.innerHeight) * 2 + 1
+      this._pointerSeen = true
+      this._pointerAt = this.elapsed
+      this._updateMouseTarget(e.clientX, e.clientY)
+    }
+    this._onPointerDown = (e) => {
+      this._updateMouseTarget(e.clientX, e.clientY)
+      this.particles.spawnRipple(this._mouseTarget, this.elapsed)
+    }
+    this._onPointerLeave = () => {
+      this._pointerSeen = false
+    }
+    window.addEventListener('pointermove', this._onPointerMove, { passive: true })
+    window.addEventListener('pointerdown', this._onPointerDown, { passive: true })
+    document.documentElement.addEventListener('mouseleave', this._onPointerLeave)
+
     this.clock = new THREE.Clock()
     this.elapsed = 0
 
@@ -73,8 +103,9 @@ export class Experience {
     requestAnimationFrame(this.loop)
   }
 
-  /** 全局滚动进度（相机关键帧） */
+  /** 全局滚动进度（相机关键帧 + 湍流强度来源） */
   setProgress(p) {
+    this._progress = Math.max(0, Math.min(1, p))
     this.rig.setProgress(p)
   }
 
@@ -101,6 +132,7 @@ export class Experience {
     this.rig.update(dt)
     this.particles.update(dt, this.elapsed)
     this.sm.update(dt, this.elapsed)
+    this._updateInteraction(dt)
     this.renderer.render(this.scene, this.camera)
 
     if (!this.firstFrameEmitted) {
@@ -109,9 +141,34 @@ export class Experience {
     }
   }
 
+  /** 指针屏幕坐标 → 粒子云深度处的世界坐标（随相机移动，始终指向视觉主体） */
+  _updateMouseTarget(clientX, clientY) {
+    this._rayPoint
+      .set((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1, 0.5)
+      .unproject(this.camera)
+    this._rayDir.copy(this._rayPoint).sub(this.camera.position).normalize()
+    this._mouseTarget.copy(this.camera.position).addScaledVector(this._rayDir, 10.5)
+  }
+
+  /** 交互强度缓动：引力场跟随/衰减、湍流快起慢落（强度全部封顶） */
+  _updateInteraction(dt) {
+    const u = this.particles.material.uniforms
+    const kTarget = this._pointerSeen && this.elapsed - this._pointerAt < 1.4 ? 1 : 0
+    u.uMouseK.value += (kTarget - u.uMouseK.value) * (1 - Math.exp(-7 * dt))
+    u.uMouse.value.lerp(this._mouseTarget, 1 - Math.exp(-9 * dt))
+    const vel = Math.abs(this._progress - this._prevProgress) / Math.max(dt, 1e-4)
+    this._prevProgress = this._progress
+    const turbTarget = Math.min(1, vel * 1.4)
+    const ease = turbTarget > u.uTurb.value ? 14 : 2.4 // 快起慢落
+    u.uTurb.value += (turbTarget - u.uTurb.value) * (1 - Math.exp(-ease * dt))
+  }
+
   dispose() {
     this.running = false
     window.removeEventListener('resize', this._onResize)
+    window.removeEventListener('pointermove', this._onPointerMove)
+    window.removeEventListener('pointerdown', this._onPointerDown)
+    document.documentElement.removeEventListener('mouseleave', this._onPointerLeave)
     document.removeEventListener('visibilitychange', this._onVisibility)
     this.rig.dispose()
     this.particles.dispose()
