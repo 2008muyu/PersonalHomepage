@@ -9,7 +9,19 @@ import { webglSupported } from './experience/utils/perf.js'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+// 全局错误捕获（测试与线上排障用）
+window.__pageErrors = []
+window.addEventListener('error', (e) => {
+  window.__pageErrors.push(String(e.message ?? e.error ?? e.type))
+})
+window.addEventListener('unhandledrejection', (e) => {
+  window.__pageErrors.push('rejection: ' + String(e.reason))
+})
+
+// ?reduced=1 测试钩子：强制走 prefers-reduced-motion 降级路径（QA 用）
+const reducedMotion =
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+  new URLSearchParams(location.search).has('reduced')
 const can3d = !reducedMotion && webglSupported()
 
 // 1. 内容先行：无论 3D 是否可用，五幕内容必须完整可读
@@ -19,25 +31,34 @@ markRevealTargets()
 // 2. 3D 体验（三层降级：正常 → 低配 → 静态背景）
 let experience = null
 if (can3d) {
-  experience = new Experience({
-    canvas: document.getElementById('gl'),
-    onFirstFrame: () => {
-      finishLoading()
-      heroEntrance()
-    },
-  })
-} else {
+  try {
+    experience = new Experience({
+      canvas: document.getElementById('gl'),
+      onFirstFrame: () => {
+        finishLoading()
+        heroEntrance()
+      },
+    })
+  } catch (err) {
+    window.__pageErrors.push('Experience init failed: ' + String(err))
+    experience = null
+  }
+}
+if (!experience) {
   document.body.classList.add('no-3d')
   if (reducedMotion) document.body.classList.add('reduced-motion')
 }
 
 // 3. 滚动叙事
-createScrollNarrative({
+const narrative = createScrollNarrative({
   reducedMotion,
   onProgress: (p) => experience?.setProgress(p),
   onSection: (name) => experience?.setSection(name),
   onSectionProgress: (name, sp) => experience?.setSectionProgress(name, sp),
 })
+
+// 测试/排障钩子
+window.__homepage = { experience, narrative }
 
 // 4. loading 覆盖层淡出（HTML 内联可见，JS 就绪后撤除；2.5s 兜底）
 let loadingDone = false

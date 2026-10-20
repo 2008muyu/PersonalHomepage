@@ -87,5 +87,8 @@ export function createScrollNarrative({ reducedMotion, onProgress, onSection, on
     }
   })
 
-  return { kill: () => ScrollTrigger.getAll().forEach((t) => t.kill()) }
+  return {
+    kill: () => ScrollTrigger.getAll().forEach((t) => t.kill()),
+    triggers: () => ScrollTrigger.getAll(),
+  }
 }
