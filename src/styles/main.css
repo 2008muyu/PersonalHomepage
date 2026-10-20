@@ -195,18 +195,15 @@ body.no-3d #gl {
   gap: 22px;
   align-items: flex-start;
 }
-/* 柔和遮光衬底：压暗文字后方粒子高光，保持 3D 通透 */
+/* 柔和遮光衬底：压暗文字后方粒子高光（覆盖整块文本区，下缘加强），保持 3D 通透 */
 .hero-inner::before {
   content: '';
   position: absolute;
-  inset: -48px -72px;
+  inset: -56px -96px;
   z-index: -1;
-  background: radial-gradient(
-    58% 52% at 32% 44%,
-    rgba(4, 7, 17, 0.72),
-    rgba(4, 7, 17, 0.38) 62%,
-    transparent 78%
-  );
+  background:
+    radial-gradient(72% 62% at 34% 48%, rgba(4, 7, 17, 0.82), rgba(4, 7, 17, 0.52) 62%, transparent 86%),
+    linear-gradient(to bottom, rgba(4, 7, 17, 0.35), rgba(4, 7, 17, 0.55));
   pointer-events: none;
 }
 .hero-kicker {
