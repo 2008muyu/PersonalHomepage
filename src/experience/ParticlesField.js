@@ -38,9 +38,9 @@ const FRAG = /* glsl */ `
     if (d > 0.5) discard;
     float soft = smoothstep(0.5, 0.05, d);
     vec3 color = mix(uColorA, uColorB, vRand);
-    // 近亮远暗，制造纵深
-    float fogFade = mix(1.0, 0.25, vDepth);
-    gl_FragColor = vec4(color, soft * (0.28 + 0.72 * vRand) * fogFade * uOpacity);
+    // 安静背景：整体低亮度，近处略亮、远处快速沉入背景
+    float fogFade = mix(0.72, 0.1, vDepth);
+    gl_FragColor = vec4(color, soft * (0.22 + 0.58 * vRand) * fogFade * uOpacity);
   }
 `
 
@@ -73,10 +73,10 @@ export class ParticlesField {
       uniforms: {
         uMorph: { value: 0 },
         uTime: { value: 0 },
-        uSize: { value: 2.4 },
+        uSize: { value: 1.8 },
         uColorA: { value: new THREE.Color('#22d3ee') },
         uColorB: { value: new THREE.Color('#818cf8') },
-        uOpacity: { value: 0.9 },
+        uOpacity: { value: 0.55 },
       },
       transparent: true,
       depthWrite: false,

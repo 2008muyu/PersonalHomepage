@@ -5,7 +5,7 @@
   /* 配色 */
   --bg: #050810;
   --bg-soft: #0a1220;
-  --panel: rgba(13, 22, 38, 0.55);
+  --panel: rgba(9, 16, 30, 0.62);
   --panel-border: rgba(94, 234, 212, 0.14);
   --ink: #e9f1f9;
   --ink-dim: #9db0c4;
@@ -83,48 +83,18 @@ img {
   display: block;
 }
 
-/* ============ 加载覆盖层（T3.3） ============ */
+/* ============ 加载过渡（无文案轻遮罩，快速淡出） ============ */
 #loading {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: grid;
-  place-items: center;
   background: var(--bg);
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+  pointer-events: none;
 }
 #loading.done {
   opacity: 0;
   visibility: hidden;
-}
-.loading-mark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-.loading-ring {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 2px solid rgba(34, 211, 238, 0.18);
-  border-top-color: var(--accent);
-  animation: spin 0.9s linear infinite;
-}
-.loading-text {
-  font-size: 0.72rem;
-  color: var(--ink-faint);
-  animation: pulse 1.6s ease-in-out infinite;
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes pulse {
-  50% {
-    opacity: 0.4;
-  }
 }
 
 /* ============ 3D 画布与暗角 ============ */
@@ -168,13 +138,6 @@ body.no-3d #gl {
   margin: 0 auto;
 }
 
-.section-index {
-  font-size: 0.78rem;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
 .section-title {
   font-size: var(--fs-h2);
   font-weight: 700;
@@ -192,24 +155,40 @@ body.no-3d #gl {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   align-items: flex-start;
 }
-/* 柔和遮光衬底：压暗文字后方粒子高光（覆盖整块文本区，下缘加强），保持 3D 通透 */
+/* 轻遮光衬底：粒子已压暗，仅做双保险（不横向外扩，避免移动端横向溢出） */
 .hero-inner::before {
   content: '';
   position: absolute;
-  inset: -56px -96px;
+  inset: -40px 0;
   z-index: -1;
-  background:
-    radial-gradient(72% 62% at 34% 48%, rgba(4, 7, 17, 0.82), rgba(4, 7, 17, 0.52) 62%, transparent 86%),
-    linear-gradient(to bottom, rgba(4, 7, 17, 0.35), rgba(4, 7, 17, 0.55));
+  background: radial-gradient(
+    62% 58% at 30% 45%,
+    rgba(4, 7, 17, 0.6),
+    rgba(4, 7, 17, 0.3) 60%,
+    transparent 82%
+  );
   pointer-events: none;
 }
-.hero-kicker {
+.hero-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #06131c;
+  background: linear-gradient(135deg, #7ceefb, #22d3ee 55%, #818cf8);
+  box-shadow: 0 10px 34px -10px rgba(34, 211, 238, 0.5);
+  margin-bottom: 4px;
+}
+.hero-greet {
+  font-size: 1.15rem;
   color: var(--ink-dim);
-  font-size: 0.8rem;
-  text-shadow: 0 1px 10px rgba(3, 6, 16, 0.9);
+  text-shadow: 0 1px 10px rgba(3, 6, 16, 0.8);
 }
 .hero-title {
   display: flex;
@@ -257,6 +236,11 @@ body.no-3d #gl {
   line-height: 1.9;
   color: var(--ink-dim);
   max-width: 34em;
+  padding: 26px 30px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
 }
 .about-facts {
   list-style: none;
@@ -285,14 +269,18 @@ body.no-3d #gl {
   line-height: 1.6;
 }
 
-/* ---- Journey / 时间线 ---- */
+/* ---- Journey / 时间线（整块轻背板保证可读） ---- */
 .timeline {
   list-style: none;
-  padding: 0;
+  padding: 34px 38px;
   display: flex;
   flex-direction: column;
   gap: 34px;
   max-width: 760px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(10px);
 }
 .timeline li {
   position: relative;
@@ -466,29 +454,16 @@ body.no-3d #gl {
   color: var(--ink-faint);
 }
 
-/* ============ 入场动画（滚动触发，T1.6） ============ */
+/* ============ 入场动画（滚动触发，轻量） ============ */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(18px);
 }
 
 body.reduced-motion .reveal {
   opacity: 1;
   transform: none;
   transition: none;
-}
-
-/* 滚动进度指示（顶部细线） */
-#scrollbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  z-index: 50;
 }
 
 /* ============ 响应式（T1.4 / T3.1） ============ */
@@ -501,6 +476,10 @@ body.reduced-motion .reveal {
   }
   .section {
     padding: 14vh 20px;
+  }
+  .timeline {
+    padding: 26px 24px;
+    gap: 30px;
   }
   .timeline li::after {
     bottom: -30px;
@@ -524,9 +503,6 @@ body.reduced-motion .reveal {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .loading-ring {
-    animation-duration: 2.4s;
   }
   .project-card,
   .contact-link,

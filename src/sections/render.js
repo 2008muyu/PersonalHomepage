@@ -28,6 +28,7 @@ function esc(text) {
 
 export function renderSections() {
   // Hero
+  setText('[data-profile="greeting"]', profile.greeting)
   setText('[data-profile="tagline"]', profile.tagline)
   setText('[data-profile="metaLine"]', profile.metaLine)
   setText('[data-profile="aboutTitle"]', profile.aboutTitle)
@@ -91,6 +92,6 @@ function setText(selector, text) {
 // 为每个 section 内的离散内容块加 reveal 类（Hero 已由入场时间线接管，跳过）
 export function markRevealTargets() {
   document.querySelectorAll('.about .about-grid > *').forEach((n) => n.classList.add('reveal'))
-  document.querySelectorAll('.section-index, .section-title').forEach((n) => n.classList.add('reveal'))
+  document.querySelectorAll('.section-title').forEach((n) => n.classList.add('reveal'))
   document.querySelectorAll('.contact-lead, .contact-links').forEach((n) => n.classList.add('reveal'))
 }

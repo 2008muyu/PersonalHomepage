@@ -9,7 +9,7 @@ export function detectTier() {
   if (isMobile) {
     return {
       name: 'mobile',
-      particleCount: 4200,
+      particleCount: 2400,
       maxDpr: 1.5,
       accentDetail: 1,
     }
@@ -17,14 +17,14 @@ export function detectTier() {
   if (memory <= 4 || cores <= 4) {
     return {
       name: 'low',
-      particleCount: 2600,
+      particleCount: 1600,
       maxDpr: 1.25,
       accentDetail: 1,
     }
   }
   return {
     name: 'desktop',
-    particleCount: 12000,
+    particleCount: 6000,
     maxDpr: 2,
     accentDetail: 2,
   }

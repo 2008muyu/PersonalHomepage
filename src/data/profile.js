@@ -2,45 +2,46 @@
 export const profile = {
   name: 'muyu',
   handle: '@2008muyu',
-  tagline: 'AI 应用工程师 · 独立开发者 —— 把想法做成能跑的工具',
-  metaLine: 'Three.js / MCP / TypeScript · 中国',
+  greeting: '👋 你好，我是',
+  tagline: '喜欢把想法做成能跑的工具：一会儿写 AI 应用，一会儿折腾树莓派，偶尔玩玩创意编程。',
+  metaLine: '坐标中国 · 常写 TypeScript 和 Python',
 
-  aboutTitle: '你好，我是 muyu',
-  lead: '我在 AI 应用与开发者工具的交叉地带工作：喜欢把复杂的系统（舆情数据、树莓派指标、大模型调用）做成普通人能用的产品。相信好的工具应该自己会说话，于是大部分业余时间都花在造工具、写指南、折腾自托管基础设施上。',
+  aboutTitle: '关于我',
+  lead: '我在 AI 应用和开发者工具的交叉地带待着，最大的乐趣是把复杂的系统——舆情数据、树莓派指标、大模型调用——做成普通人也能用的东西。相信好工具自己会说话，所以业余时间基本都花在造工具、写指南、折腾自托管上。',
 
-  // 经历时间线（时间倒序）
+  // 经历时间线（时间倒序，成长小故事口吻）
   timeline: [
     {
       time: '2026',
-      role: '独立开发 · 基础设施',
+      role: '给家里的开发板做「体检」',
       description:
-        '为家里的树莓派集群打造可观测性工具链：pi-stats-insight 做指标洞察、pi-notify 做轻量告警，全部 TypeScript 编写，持续迭代中。',
+        '今年在给树莓派集群打磨一套可观测性工具链：pi-stats-insight 负责看指标，pi-notify 负责发告警，都用 TypeScript 写的，还在慢慢迭代。',
     },
     {
       time: '2025',
-      role: 'AI 应用工程',
+      role: '把热点数据玩出花',
       description:
-        '开发 TrendRadar——聚合 35 个平台热点的 AI 舆情分析工具，基于 MCP 提供趋势追踪、情感分析等 13 种自然语言分析能力；同期参与 AgentGuide 的整理，系统梳理 LangGraph 与 RAG 实战路线。',
+        '做了 TrendRadar——把 35 个平台的热点聚到一起，接上大模型做趋势追踪和情感分析；同年整理 AgentGuide，把 LangGraph 和 RAG 的实战路线系统梳理了一遍。',
     },
     {
       time: '2013 →',
-      role: '长期主义的开源爱好者',
+      role: '一个长期主义者',
       description:
-        '注册 GitHub 账号，从此把 side project 当成习惯：游戏开发工具、数据可视化、自动化脚本，仓库记录了一路的兴趣迁移。',
+        '注册了 GitHub 账号，从此把 side project 当成习惯：游戏开发工具、数据可视化、自动化脚本……仓库列表记录了我一路的兴趣迁移。',
     },
   ],
 
   facts: [
-    { k: 'GitHub', v: '2013 年注册，公开仓库持续更新' },
-    { k: '主方向', v: 'AI Agent · MCP 工具链 · 数据可视化' },
-    { k: '副方向', v: '树莓派自托管 · 游戏开发工具' },
-    { k: '常用技术', v: 'TypeScript / Python / Three.js / Docker' },
+    { k: 'GitHub 龄', v: '2013 年注册，公开仓库持续更新' },
+    { k: '主线', v: 'AI Agent · MCP 工具链 · 数据可视化' },
+    { k: '支线', v: '树莓派自托管 · 游戏开发工具' },
+    { k: '顺手会用', v: 'TypeScript / Python / Three.js / Docker' },
   ],
 
-  contactLead: '如果你在做有趣的东西，或者想聊聊 AI 应用、自托管、创意编程——欢迎找我。通常会在 GitHub 上最快回复。',
+  contactLead: '如果你在做有趣的东西，或者想聊聊 AI 应用、自托管、创意编程——欢迎找我，GitHub 上回复最快。',
   contactLinks: [
     { label: 'GitHub 主页', href: 'https://github.com/2008muyu', icon: 'github' },
-    { label: '发送邮件', href: 'mailto:506634967@qq.com', icon: 'mail' },
+    { label: '给我发邮件', href: 'mailto:506634967@qq.com', icon: 'mail' },
   ],
-  footer: '© 2026 muyu · 用 Three.js + GSAP 手工打造 · 源码托管于 GitHub',
+  footer: '© 2026 muyu · 这个站是我自己写的，源码在 GitHub',
 }

@@ -31,7 +31,7 @@ export class Experience {
     this.renderer.setClearColor(0x050810, 1)
 
     this.scene = new THREE.Scene()
-    this.scene.fog = new THREE.FogExp2(0x050810, 0.052)
+    this.scene.fog = new THREE.FogExp2(0x050810, 0.062)
 
     this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 60)
     this.camera.position.set(0, 1.7, 16.6)

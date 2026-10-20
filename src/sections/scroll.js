@@ -8,12 +8,6 @@ gsap.registerPlugin(ScrollTrigger)
 const SECTION_NAMES = ['hero', 'about', 'journey', 'work', 'contact']
 
 export function createScrollNarrative({ reducedMotion, onProgress, onSection, onSectionProgress }) {
-  // 顶部进度条
-  const bar = document.createElement('div')
-  bar.id = 'scrollbar'
-  bar.setAttribute('aria-hidden', 'true')
-  document.body.appendChild(bar)
-
   let activeSection = null
   const setSection = (name) => {
     if (name === activeSection) return
@@ -46,7 +40,6 @@ export function createScrollNarrative({ reducedMotion, onProgress, onSection, on
     end: 'bottom bottom',
     onUpdate: (self) => {
       onProgress?.(self.progress)
-      bar.style.transform = `scaleX(${self.progress})`
     },
   })
 
@@ -70,13 +63,13 @@ export function createScrollNarrative({ reducedMotion, onProgress, onSection, on
     if (targets.length) {
       gsap.fromTo(
         targets,
-        { autoAlpha: 0, y: 34 },
+        { autoAlpha: 0, y: 20 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.9,
-          stagger: 0.12,
-          ease: 'power3.out',
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: `#${name}`,
             start: 'top 68%',

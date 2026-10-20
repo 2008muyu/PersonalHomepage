@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>muyu · 独立开发者主页</title>
+    <title>muyu 的个人主页</title>
     <meta
       name="description"
-      content="muyu（@2008muyu）的个人主页 — AI 应用工程师 / 独立开发者。TrendRadar 舆情分析、树莓派可观测性工具链、AI Agent 开发指南。"
+      content="muyu（@2008muyu）的个人主页——喜欢把想法做成能跑的工具：AI 应用、树莓派自托管、创意编程。"
     />
     <meta name="author" content="muyu" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -14,33 +14,28 @@
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="muyu · 独立开发者主页" />
+    <meta property="og:title" content="muyu 的个人主页" />
     <meta
       property="og:description"
-      content="AI 应用工程师 / 独立开发者。用 Three.js 记录从舆情分析到树莓派工具链的开发旅程。"
+      content="喜欢把想法做成能跑的工具：AI 应用、树莓派自托管、创意编程。"
     />
     <meta property="og:url" content="https://2008muyu.github.io/PersonalHomepage/" />
     <meta property="og:image" content="https://2008muyu.github.io/PersonalHomepage/assets/og-cover.svg" />
     <meta property="og:locale" content="zh_CN" />
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="muyu · 独立开发者主页" />
+    <meta name="twitter:title" content="muyu 的个人主页" />
     <meta
       name="twitter:description"
-      content="AI 应用工程师 / 独立开发者。用 Three.js 记录从舆情分析到树莓派工具链的开发旅程。"
+      content="喜欢把想法做成能跑的工具：AI 应用、树莓派自托管、创意编程。"
     />
     <meta name="twitter:image" content="https://2008muyu.github.io/PersonalHomepage/assets/og-cover.svg" />
 
     <script type="module" src="/src/main.js"></script>
   </head>
   <body>
-    <!-- 加载覆盖层：内联实现，不依赖 JS 即可见；JS 就绪后淡出（T3.3） -->
-    <div id="loading" aria-hidden="true">
-      <div class="loading-mark">
-        <span class="loading-ring"></span>
-        <span class="loading-text">INITIALIZING</span>
-      </div>
-    </div>
+    <!-- 加载过渡：无文案的轻遮罩，JS 就绪后快速淡出，避免入场闪烁 -->
+    <div id="loading" aria-hidden="true"></div>
 
     <!-- 一镜到底的 3D 画布：固定底层，DOM 各幕在其上滚动 -->
     <canvas id="gl" aria-hidden="true"></canvas>
@@ -56,19 +51,19 @@
     <main id="story">
       <header class="hero section" id="hero" data-section-name="hero">
         <div class="section-inner hero-inner">
-          <p class="hero-kicker mono">// scroll to explore</p>
+          <div class="hero-avatar" aria-hidden="true">m</div>
+          <p class="hero-greet" data-profile="greeting"></p>
           <h1 class="hero-title">
             <span class="hero-name">muyu</span>
             <span class="hero-handle mono">@2008muyu</span>
           </h1>
           <p class="hero-tagline" data-profile="tagline"></p>
-          <div class="hero-meta mono" data-profile="metaLine"></div>
+          <div class="hero-meta" data-profile="metaLine"></div>
         </div>
       </header>
 
       <section class="section about" id="about" aria-labelledby="about-title">
         <div class="section-inner">
-          <p class="section-index mono">01 / 关于</p>
           <h2 id="about-title" class="section-title" data-profile="aboutTitle"></h2>
           <div class="about-grid">
             <p class="about-lead" data-profile="lead"></p>
@@ -79,27 +74,24 @@
 
       <section class="section journey" id="journey" aria-labelledby="journey-title">
         <div class="section-inner">
-          <p class="section-index mono">02 / 历程</p>
-          <h2 id="journey-title" class="section-title">从 2013 到现在的开发时间线</h2>
+          <h2 id="journey-title" class="section-title">一路走来</h2>
           <ol class="timeline" id="timeline"></ol>
         </div>
       </section>
 
       <section class="section work" id="work" aria-labelledby="work-title">
         <div class="section-inner">
-          <p class="section-index mono">03 / 作品</p>
-          <h2 id="work-title" class="section-title">一些我认真做过的东西</h2>
+          <h2 id="work-title" class="section-title">我做过的东西</h2>
           <div class="projects" id="projects"></div>
         </div>
       </section>
 
       <section class="section contact" id="contact" aria-labelledby="contact-title">
         <div class="section-inner contact-inner">
-          <p class="section-index mono">04 / 联系</p>
-          <h2 id="contact-title" class="section-title">聊聊技术，随时欢迎</h2>
+          <h2 id="contact-title" class="section-title">来找我聊聊</h2>
           <p class="contact-lead" data-profile="contactLead"></p>
           <div class="contact-links" data-profile="contactLinks"></div>
-          <footer class="site-footer mono" data-profile="footer"></footer>
+          <footer class="site-footer" data-profile="footer"></footer>
         </div>
       </section>
     </main>

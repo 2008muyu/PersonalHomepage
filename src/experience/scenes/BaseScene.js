@@ -28,15 +28,18 @@ export class BaseScene {
   exit() {}
 }
 
+// 场景整体减光系数：安静背景基调下，线框元素退到背景层（方案 v1.1 决策）
+const SCENE_DIM = 0.6
+
 export function wireMaterial(color, opacity) {
   const m = new THREE.MeshBasicMaterial({
     color,
     wireframe: true,
     transparent: true,
-    opacity,
+    opacity: opacity * SCENE_DIM,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
   })
-  m.userData.baseOpacity = opacity
+  m.userData.baseOpacity = opacity * SCENE_DIM
   return m
 }
