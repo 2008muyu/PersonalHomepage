@@ -1,5 +1,13 @@
 // 项目列表 —— 作品集唯一数据来源
-// 新增项目三步：① 在此数组追加一条 ② 截图放入 public/assets/ ③ 重新部署
+// 新增公开项目三步：① 在此数组追加一条 ② 截图放入 public/assets/ ③ 重新部署
+//
+// 私有项目（代码/仓库不可公开）同样进此数组，两档写法：
+//  完整档：内容可写时 —— 照常填 oneLiner/description/stack，但 link 留 null，
+//          卡片自动显示「🔒 私有项目 · 可面谈详述」徽标（不渲染外链）
+//  极简档：内容敏感时 —— 只填 name/title/oneLiner（领域+角色一句话，如
+//          「某零售企业数据平台 · 独立开发」），省略 description/stack 亦可
+// 封面统一用 public/assets/project-private.svg（抽象封存风，勿放真实截图）
+// 另有连提都不便提的项目：在下方 undisclosed.count 填真实数量，汇总行会自动出现
 export const projects = [
   {
     name: 'TrendRadar',
@@ -38,3 +46,6 @@ export const projects = [
     accent: '#34d399',
   },
 ]
+
+// 因保密连列都不便列的项目数量（0 = 不显示汇总行；填真实数字后自动出现）
+export const undisclosed = { count: 0 }

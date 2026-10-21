@@ -1,7 +1,7 @@
 // DOM 渲染：把 src/data 的纯数据注入五幕骨架。
 // 职责边界：只操作 DOM，不触碰 WebGL（方案 §5 模块职责）
 import { profile } from '../data/profile.js'
-import { projects } from '../data/projects.js'
+import { projects, undisclosed } from '../data/projects.js'
 
 // public/ 资源以 '/' 开头时，需补上部署 base（项目仓库路径）避免 404
 const withBase = (path) =>
@@ -53,24 +53,36 @@ export function renderSections() {
     )
     .join('')
 
-  // Work projects
+  // Work projects（link 为 null 即私有项目：徽标替代外链，description 可省略）
   const wrap = document.getElementById('projects')
   wrap.innerHTML = projects
     .map(
       (p) => `
-      <article class="project-card reveal">
+      <article class="project-card reveal${p.link ? '' : ' is-private'}">
         <img class="project-cover" src="${withBase(p.cover)}" alt="${esc(p.title)} 封面" loading="lazy" decoding="async" width="640" height="400" />
         <div class="project-body">
-          <p class="project-year mono">${esc(p.year)}</p>
+          <p class="project-year mono">${esc(p.year)}${p.link ? '' : ' · 私有项目'}</p>
           <h3 class="project-name">${esc(p.name)}</h3>
           <p class="project-one">${esc(p.oneLiner)}</p>
-          <p class="project-desc">${esc(p.description)}</p>
-          <div class="project-stack">${p.stack.map((s) => `<span class="tag mono">${esc(s)}</span>`).join('')}</div>
-          <a class="project-link" href="${p.link}" target="_blank" rel="noopener noreferrer">查看项目 <span class="arrow">→</span></a>
+          ${p.description ? `<p class="project-desc">${esc(p.description)}</p>` : ''}
+          ${p.stack ? `<div class="project-stack">${p.stack.map((s) => `<span class="tag mono">${esc(s)}</span>`).join('')}</div>` : ''}
+          ${
+            p.link
+              ? `<a class="project-link" href="${p.link}" target="_blank" rel="noopener noreferrer">查看项目 <span class="arrow">→</span></a>`
+              : `<span class="project-link project-link--private">🔒 私有项目 · 可面谈详述</span>`
+          }
         </div>
       </article>`,
     )
     .join('')
+
+  // 保密项目汇总行（undisclosed.count > 0 时才出现，杜绝占位内容）
+  if (undisclosed.count > 0) {
+    const note = document.createElement('p')
+    note.className = 'projects-note reveal'
+    note.textContent = `另有 ${undisclosed.count} 个企业/保密项目未在此列出，欢迎面谈详述。`
+    wrap.after(note)
+  }
 
   // Contact
   setText('[data-profile="contactLead"]', profile.contactLead)

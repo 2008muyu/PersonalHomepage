@@ -397,6 +397,26 @@ body.no-3d #gl {
   font-size: var(--fs-small);
   font-weight: 600;
 }
+/* 私有项目：徽标替代外链，弱化不强调 */
+.project-link--private {
+  color: var(--ink-faint);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.project-card.is-private .project-cover {
+  filter: saturate(0.6) brightness(0.82);
+}
+/* 保密项目汇总行 */
+.projects-note {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  font-size: var(--fs-small);
+  color: var(--ink-dim);
+  padding: 14px 20px;
+  border: 1px dashed var(--panel-border);
+  border-radius: var(--radius);
+  background: rgba(10, 18, 32, 0.4);
+}
 .project-link .arrow {
   display: inline-block;
   transition: transform 0.25s ease;

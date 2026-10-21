@@ -34,6 +34,17 @@ push 到 `main` 分支后，GitHub Actions（`.github/workflows/deploy.yml`）�
 
 个人信息、经历、联系方式同理改 `src/data/profile.js` —— 数据与实现完全分离，不需要碰场景代码。
 
+### 私有项目（代码不可公开）
+
+同样加进 `projects.js`，两档写法（见文件头注释）：
+
+- **完整档**（内容可写）：照常填描述/技术栈，`link` 留 `null` → 卡片自动显示「🔒 私有项目 · 可面谈详述」，不渲染外链
+- **极简档**（内容敏感）：只填名称 + 一句话领域角色（如「某零售企业数据平台 · 独立开发」），`description`/`stack` 可省略
+- 封面统一用 `assets/project-private.svg`（抽象封存风，勿放真实截图）
+- 连列都不便列的项目：`undisclosed.count` 填真实数量，汇总行自动出现（0 则不显示）
+
+个人信息、经历、联系方式同理改 `src/data/profile.js` —— 数据与实现完全分离，不需要碰场景代码。
+
 ## 目录结构
 
 ```
